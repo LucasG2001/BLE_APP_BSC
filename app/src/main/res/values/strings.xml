@@ -22,4 +22,5 @@
     <string name="device_disconnected">DISCONNECTED</string>
     <string name="ble_device_key">askljdgjKLSDGJlKJSgdlkd</string>
     <string name="agm_key">KLAFDJGkljasdglJASFLDFKSJFLKASDJGK</string>
+    <string name="warning">Warning</string>
 </resources>

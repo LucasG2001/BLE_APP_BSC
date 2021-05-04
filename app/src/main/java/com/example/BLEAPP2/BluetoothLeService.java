@@ -212,7 +212,7 @@ public class BluetoothLeService extends Service {
                     broadcastUpdate(ACTION_DATA_READ_COMPLETED);
                     Log.d("Lucas", "Data complete");
                     broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
-                    gatt.discoverServices();//zeige uns, dass wir angekommen sind, filtere mit Lucas
+                    gatt.discoverServices();
                     //disconnect();
                 }
                 //saveAgmData();
@@ -283,7 +283,7 @@ public class BluetoothLeService extends Service {
                 //getStringValue(int offset) returns a char array, starting form an offset. This char array is the characteristic value of the string
                 //count = Integer.parseInt(characteristic.getStringValue(0).split(",")[1]); //count is some value defined in the Arduino code. Split [1] accesses the second element of some array
                 //xAcc.set(0,Integer.parseInt(characteristic.getStringValue(0).split(",")[0]));
-                xAcc.set(0,characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8,0));
+                xAcc.set(0,characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16,0));
                 //xAcc.set(0,1);
                 //xAcc.set(1,2);
 
@@ -296,7 +296,7 @@ public class BluetoothLeService extends Service {
             case BODY_SENSOR_READ:
                 //count = Integer.parseInt(characteristic.getStringValue(0).split(",")[1]);
                 //yAcc.set(0,Integer.parseInt(characteristic.getStringValue(0).split(",")[0]));
-                yAcc.set(0,characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8,0));
+                yAcc.set(0,characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16,0));
                 //yAcc.set(0,1);
                 //yAcc.set(1,2);
 

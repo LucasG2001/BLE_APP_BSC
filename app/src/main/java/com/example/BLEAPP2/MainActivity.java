@@ -1,6 +1,7 @@
 package com.example.BLEAPP2;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.BroadcastReceiver;
@@ -15,7 +16,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -25,9 +28,12 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
+
+import java.text.NumberFormat;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.BLUETOOTH;
@@ -58,8 +64,17 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar zAccProgressView;
     private TextView xAccView;
     private TextView yAccView;
+    private TextView warningtextview;
     private TextView zAccView;
     private TextView activityView;
+    //initialize graph Series
+    LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
+            new DataPoint(0, 1),
+            new DataPoint(1, 5),
+            new DataPoint(2, 3),
+            new DataPoint(3, 2),
+            new DataPoint(4, 6)
+    });
 
     @SuppressLint("WrongConstant")
     @Override
@@ -67,15 +82,28 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //plots line graph
         GraphView graph = findViewById(R.id.graph);
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
-                new DataPoint(0, 1),
-                new DataPoint(1, 5),
-                new DataPoint(2, 3),
-                new DataPoint(3, 2),
-                new DataPoint(4, 6)
-        });
+        graph.setTitle("No2 gas concentration");
+        graph.getViewport().setScalable(true); //enables scrolling
+        graph.getViewport().setXAxisBoundsManual(true); //sets x axis boundaries
+        graph.getViewport().setMinX(0);
+        // set axis titles
+        graph.getGridLabelRenderer().setHighlightZeroLines(true);
+
+        graph.getGridLabelRenderer().setHorizontalAxisTitle("Time [s]");
+        graph.getGridLabelRenderer().setHighlightZeroLines(true);
+        graph.getGridLabelRenderer().setVerticalAxisTitle("NO2 gas concentration [ppb]");
+        // set graph such that only integer numbers are displayed
+        NumberFormat nf = NumberFormat.getInstance();
+        nf.setMaximumFractionDigits(0);
+        graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter(nf,nf));
+        // add data
         graph.addSeries(series);
+
+
+
         sharedPrefBLE = getSharedPreferences(getString(R.string.ble_device_key),Context.MODE_PRIVATE);
         deviceName = sharedPrefBLE.getString("name",null);
         deviceAddress = sharedPrefBLE.getString("address",null);
@@ -101,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
         initializeLayout();
         establishServiceConnection();
     }
+
 
     @Override
     protected void onDestroy() {
@@ -166,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     @Override
-    protected void onResume() {
+    protected void onResume() { //comes when onPause is disabled
         super.onResume();
         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
         if (bleService != null) {
@@ -176,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
+    protected void onPause() { //executed when activity gets paused, like going to homescreen
         super.onPause();
         unregisterReceiver(mGattUpdateReceiver);
     }
@@ -227,19 +256,29 @@ public class MainActivity extends AppCompatActivity {
         //here the actual text shown on screen is actually set
         xAccView.setText(xAccAvg);
         yAccView.setText(yAccAvg);
-        zAccView.setText(zAccAvg);
+        //zAccView.setText(zAccAvg);
 
         xAccProgressView.setProgress(Integer.parseInt(xAccAvg));
         yAccProgressView.setProgress(Integer.parseInt(yAccAvg));
-        zAccProgressView.setProgress(Integer.parseInt(zAccAvg));
+        //zAccProgressView.setProgress(Integer.parseInt(zAccAvg));
 
-        if (Integer.parseInt(xAccAvg) > 50 || Integer.parseInt(yAccAvg) > 50 || Integer.parseInt(zAccAvg) > 50) {
-            activityView.setText("Moving");
+       if (Integer.parseInt(yAccAvg) < 50 || yAccAvg == null) {
+            warningtextview.setText("Gas concentration low");
+            warningtextview.setTextColor(getResources().getColorStateList(R.color.colorDarkGreen));
+        } else if (Integer.parseInt(yAccAvg) > 50 && Integer.parseInt(yAccAvg) < 200) {
+           warningtextview.setText("Gas concentration medium");
+           warningtextview.setTextColor(getResources().getColorStateList(R.color.colorYellow));
         } else {
-            activityView.setText("Still");
-        }
+           warningtextview.setText("Gas concentration high!");
+           warningtextview.setTextColor(getResources().getColorStateList(R.color.colorPrimaryRed));
+           }
+
 
         scanProgressBar.setVisibility(View.GONE);
+        // append new value to graph
+        series.appendData(new DataPoint(Integer.parseInt(xAccAvg),Integer.parseInt(yAccAvg)), true, 100000);
+        Log.d("A","appended Data point");
+        Log.d("A",""+Integer.parseInt(xAccAvg)+" "+Integer.parseInt(yAccAvg));
     }
 
     public void openBleScanner() {
@@ -262,11 +301,12 @@ public class MainActivity extends AppCompatActivity {
 
         xAccView = findViewById(R.id.x_acc);
         yAccView = findViewById(R.id.y_acc);
-        zAccView = findViewById(R.id.z_acc);
+        //zAccView = findViewById(R.id.z_acc);
 
         xAccProgressView = findViewById(R.id.x_acc_progress);
         yAccProgressView = findViewById(R.id.y_acc_progress);
-        zAccProgressView = findViewById(R.id.z_acc_progress);
+        warningtextview = findViewById(R.id.warningText);
+        //zAccProgressView = findViewById(R.id.z_acc_progress);
 
         //activityView = findViewById(R.id.activity_summary);
 
