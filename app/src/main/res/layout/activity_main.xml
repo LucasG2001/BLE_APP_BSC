@@ -16,176 +16,54 @@
         android:background="@color/colorAccent"
         android:fillViewport="true"
         tools:layout_conversion_absoluteHeight="429dp"
-        tools:layout_editor_absoluteY="0dp"
+        tools:layout_conversion_absoluteWidth="321dp"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_conversion_absoluteWidth="321dp">
+        tools:layout_editor_absoluteY="0dp">
 
-        <LinearLayout
-            android:orientation="vertical"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/colorAccent"
-            android:padding="12dp"
-            android:layout_height="match_parent">
+            app:layout_constraintEnd_toEndOf="@+id/textView"
+            app:layout_constraintStart_toEndOf="@+id/textView">
 
             <TextView
                 android:id="@+id/last_updated"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorAccent"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginRight="0dp"
+                android:background="@color/colorBackground"
+                android:gravity="left"
                 android:text="Gas Concentration Readout"
+                android:textColor="@color/colorWhite"
                 android:textSize="16sp"
-                android:layout_marginBottom="12dp"
-                android:textColor="@color/colorGray"
-                android:gravity="left">
-            </TextView>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/linearLayout5"
-                android:layout_width="387dp"
-                android:layout_height="223dp"
-                android:layout_marginBottom="12dp"
-                android:background="@color/colorLightBackground"
-                android:baselineAligned="false"
-                android:paddingBottom="12dp">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/linearLayout2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="12dp"
-                    android:layout_marginRight="12dp"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/linearLayout3"
-                    app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-                    <!--            android:onClick="openFloors"-->
-
-                    <ProgressBar
-                        android:id="@+id/x_acc_progress"
-                        style="?android:attr/progressBarStyleHorizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:background="@drawable/progress_circle_background"
-                        android:indeterminate="false"
-                        android:max="100"
-                        android:progress="0"
-                        android:progressDrawable="@drawable/progress_circle_warn"
-                        app:layout_constrainedHeight="false"
-                        app:layout_constraintBottom_toTopOf="@+id/x_acc"
-                        app:layout_constraintDimensionRatio="1:1"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.0" />
-
-                    <TextView
-                        android:id="@+id/x_acc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="-"
-                        android:textColor="@color/colorWhite"
-                        android:textStyle="bold"
-                        app:layout_constrainedHeight="true"
-                        app:layout_constraintBottom_toTopOf="@+id/textView"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                    <TextView
-                        android:id="@+id/textView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Time"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="18sp"
-                        app:layout_constrainedHeight="true"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.496"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/linearLayout3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintStart_toEndOf="@+id/linearLayout2"
-                    app:layout_constraintTop_toTopOf="parent">
-                    <!--            android:onClick="openMiles"-->
-
-                    <ProgressBar
-                        android:id="@+id/y_acc_progress"
-                        style="?android:attr/progressBarStyleHorizontal"
-                        android:layout_width="194dp"
-                        android:layout_height="196dp"
-                        android:background="@drawable/progress_circle_background"
-                        android:indeterminate="false"
-                        android:max="100"
-                        android:progress="0"
-                        android:progressDrawable="@drawable/progress_circle_green"
-                        app:layout_constrainedHeight="true"
-                        app:layout_constraintBottom_toTopOf="@+id/y_acc"
-                        app:layout_constraintDimensionRatio="1:1"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.025" />
-
-                    <TextView
-                        android:id="@+id/y_acc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="-"
-                        android:textColor="@color/colorWhite"
-                        android:textStyle="bold"
-                        app:layout_constrainedHeight="true"
-                        app:layout_constraintBottom_toTopOf="@+id/textView4"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                    <TextView
-                        android:id="@+id/textView4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Gas Concentration"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="18sp"
-                        app:layout_constrainedHeight="true"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <com.jjoe64.graphview.GraphView
-                android:id="@+id/graph"
-                android:layout_width="wrap_content"
-                android:layout_height="200dip" />
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 
     <TextView
         android:id="@+id/warningText"
         android:layout_width="match_parent"
-        android:layout_height="59dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginBottom="12dp"
+        android:background="@color/colorBackground"
+        android:gravity="center_horizontal"
         android:text="Warning"
-        android:textColor="#C5AE16"
+        android:textAlignment="center"
+        android:textColor="@color/colorWhite"
         android:textSize="24sp" />
+
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graph"
+        android:layout_width="wrap_content"
+        android:layout_height="200dip" />
 </LinearLayout>

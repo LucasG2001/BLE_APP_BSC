@@ -12,6 +12,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -69,11 +70,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView activityView;
     //initialize graph Series
     LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
-            new DataPoint(0, 1),
-            new DataPoint(1, 5),
-            new DataPoint(2, 3),
-            new DataPoint(3, 2),
-            new DataPoint(4, 6)
+            new DataPoint(0, 0),
     });
 
     @SuppressLint("WrongConstant")
@@ -82,7 +79,12 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        // manipulate series
+        series.setTitle("Random Curve 1");
+        series.setColor(Color.RED);
+        series.setDrawDataPoints(true);
+        series.setDataPointsRadius(10);
+        series.setThickness(8);
         //plots line graph
         GraphView graph = findViewById(R.id.graph);
         graph.setTitle("No2 gas concentration");
@@ -99,6 +101,9 @@ public class MainActivity extends AppCompatActivity {
         NumberFormat nf = NumberFormat.getInstance();
         nf.setMaximumFractionDigits(0);
         graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter(nf,nf));
+        //some nice layout
+        graph.getViewport().setBackgroundColor(0x27272f);
+
         // add data
         graph.addSeries(series);
 
@@ -254,17 +259,17 @@ public class MainActivity extends AppCompatActivity {
         String zAccAvg = sharedPrefAgm.getString("z_acc_avg", null);   //original: null
 
         //here the actual text shown on screen is actually set
-        xAccView.setText(xAccAvg);
-        yAccView.setText(yAccAvg);
+        //xAccView.setText(xAccAvg);
+        //AccView.setText(yAccAvg);
         //zAccView.setText(zAccAvg);
 
-        xAccProgressView.setProgress(Integer.parseInt(xAccAvg));
-        yAccProgressView.setProgress(Integer.parseInt(yAccAvg));
+        //xAccProgressView.setProgress(Integer.parseInt(xAccAvg));
+        //yAccProgressView.setProgress(Integer.parseInt(yAccAvg));
         //zAccProgressView.setProgress(Integer.parseInt(zAccAvg));
 
        if (Integer.parseInt(yAccAvg) < 50 || yAccAvg == null) {
             warningtextview.setText("Gas concentration low");
-            warningtextview.setTextColor(getResources().getColorStateList(R.color.colorDarkGreen));
+            warningtextview.setTextColor(getResources().getColorStateList(R.color.colorGreen));
         } else if (Integer.parseInt(yAccAvg) > 50 && Integer.parseInt(yAccAvg) < 200) {
            warningtextview.setText("Gas concentration medium");
            warningtextview.setTextColor(getResources().getColorStateList(R.color.colorYellow));
@@ -299,12 +304,10 @@ public class MainActivity extends AppCompatActivity {
         scanProgressBar = actionView.findViewById(R.id.scanInProgress);
         reconnectView = actionView.findViewById(R.id.reconnect);
 
-        xAccView = findViewById(R.id.x_acc);
-        yAccView = findViewById(R.id.y_acc);
+        //xAccView = findViewById(R.id.x_acc);
+        //yAccView = findViewById(R.id.y_acc);
         //zAccView = findViewById(R.id.z_acc);
 
-        xAccProgressView = findViewById(R.id.x_acc_progress);
-        yAccProgressView = findViewById(R.id.y_acc_progress);
         warningtextview = findViewById(R.id.warningText);
         //zAccProgressView = findViewById(R.id.z_acc_progress);
 
