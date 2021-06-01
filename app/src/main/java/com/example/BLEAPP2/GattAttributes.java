@@ -21,12 +21,9 @@ public class GattAttributes {
     public static String BATTERY_STATUS = "00002a1b-0000-1000-8000-00805f9b34fb";
 
     public static String GAS_DATA_SERVICE = "0000180D-0000-1000-8000-00805F9B34FB";
-    public static String X_ACCELERATION_MEASUREMENT = "00002A37-0000-1000-8000-00805F9B34FB";
-    public static String BODY_SENSOR_LOCATION = "00002A38-0000-1000-8000-00805F9B34FB";
-    public static String Z_ACCELERATION_MEASUREMENT = "00000004-627e-47e5-a3fc-ddabd97aa966";
-    public static String X_GYROSCOPE_MEASUREMENT = "00000005-627e-47e5-a3fc-ddabd97aa966";
-    public static String Y_GYROSCOPE_MEASUREMENT = "00000006-627e-47e5-a3fc-ddabd97aa966";
-    public static String Z_GYROSCOPE_MEASUREMENT = "00000007-627e-47e5-a3fc-ddabd97aa966";
+    public static String xCurrent_Measurement = "00002A37-0000-1000-8000-00805F9B34FB";
+    public static String yTimeMeasurement = "00002A38-0000-1000-8000-00805F9B34FB";
+    public static String zGasConc = "00000004-627e-47e5-a3fc-ddabd97aa966";
     public static String ACCELEROMETER_TIME_MEASUREMENT = "00000038-627e-47e5-a3fc-ddabd97aa966";
 
     public static String DEVICE_NAME = "00002a00-0000-1000-8000-00805f9b34fb";
@@ -44,12 +41,9 @@ public class GattAttributes {
 
     public static String CLIENT_CHARACTERISTIC_CONFIG = "00002902-0000-1000-8000-00805f9b34fb";
 
-    public static final int X_ACCELERATION_READ = 1;
-    public static final int BODY_SENSOR_READ = 2;
-    public static final int Z_ACCELERATION_READ = 3;
-    public static final int X_GYROSCOPE_READ = 4;
-    public static final int Y_GYROSCOPE_READ = 5;
-    public static final int Z_GYROSCOPE_READ = 6;
+    public static final int xCurrent_Read = 1;
+    public static final int yTime_Read = 2;
+    public static final int zGasConc_Read = 3;
     public static final int ACCELEROMETER_TIME_READ = 7;
     public static final int BATTERY_LEVEL_READ = 9;
 
@@ -62,12 +56,9 @@ public class GattAttributes {
         attributes.put(GENERIC_ATTRIBUTE, "Generic Attribute");
 
         // Characteristics
-        attributes.put(X_ACCELERATION_MEASUREMENT, "X Accelerometer Type");
-        attributes.put(BODY_SENSOR_LOCATION, "Y Accelerometer Measurement");
-        attributes.put(Z_ACCELERATION_MEASUREMENT, "Z Accelerometer Measurement");
-        attributes.put(X_GYROSCOPE_MEASUREMENT, "X Gyroscope Impedance Measurement");
-        attributes.put(Y_GYROSCOPE_MEASUREMENT, "Y Gyroscope Measurement");
-        attributes.put(Z_GYROSCOPE_MEASUREMENT, "Z Gyroscope Measurement");
+        attributes.put(xCurrent_Measurement, "X Accelerometer Type");
+        attributes.put(yTimeMeasurement, "Y Accelerometer Measurement");
+        attributes.put(zGasConc, "Z Accelerometer Measurement");
         attributes.put(ACCELEROMETER_TIME_MEASUREMENT, "Accelerometer Time Measurement");
 
         attributes.put(BATTERY_LEVEL, "Battery Level");

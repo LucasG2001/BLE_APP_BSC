@@ -9,7 +9,7 @@ public class BatteryData {
 
     public BatteryData(int batteryLevel) {
         this.batteryLevel = batteryLevel;
-    }
+    } //konstruktor
 
     public int getBatteryLevel() {
         return batteryLevel;

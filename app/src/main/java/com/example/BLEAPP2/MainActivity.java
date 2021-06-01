@@ -316,7 +316,7 @@ public class MainActivity extends AppCompatActivity {
         scanView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openBleScanner();
+                //openBleScanner();
             }
         });
 

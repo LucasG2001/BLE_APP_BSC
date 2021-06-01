@@ -27,12 +27,9 @@ import java.util.UUID;
 
 import static com.example.BLEAPP2.GattAttributes.ACCELEROMETER_TIME_READ;
 import static com.example.BLEAPP2.GattAttributes.BATTERY_LEVEL_READ;
-import static com.example.BLEAPP2.GattAttributes.X_ACCELERATION_READ;
-import static com.example.BLEAPP2.GattAttributes.X_GYROSCOPE_READ;
-import static com.example.BLEAPP2.GattAttributes.BODY_SENSOR_READ;
-import static com.example.BLEAPP2.GattAttributes.Y_GYROSCOPE_READ;
-import static com.example.BLEAPP2.GattAttributes.Z_ACCELERATION_READ;
-import static com.example.BLEAPP2.GattAttributes.Z_GYROSCOPE_READ;
+import static com.example.BLEAPP2.GattAttributes.xCurrent_Read;
+import static com.example.BLEAPP2.GattAttributes.yTime_Read;
+import static com.example.BLEAPP2.GattAttributes.zGasConc_Read;
 
 /*
  * This is a service to handle the BLE interactions.
@@ -51,12 +48,9 @@ public class BluetoothLeService extends Service {
     public List<BluetoothGattCharacteristic> chars = new ArrayList<>(); //Liste aus BLEGATTCharakterestiken "chars"
     /**here we create some Arraylist objects */
     private GasData gasData;
-    private ArrayList<Integer> xAcc = new ArrayList<Integer>();
-    private ArrayList<Integer> yAcc = new ArrayList<Integer>();
-    private ArrayList<Integer> zAcc = new ArrayList<Integer>();
-    private ArrayList<Integer> xGyro = new ArrayList<Integer>();
-    private ArrayList<Integer> yGyro = new ArrayList<Integer>();
-    private ArrayList<Integer> zGyro = new ArrayList<Integer>();
+    private ArrayList<Integer> xCurrent = new ArrayList<Integer>();
+    private ArrayList<Integer> yTime = new ArrayList<Integer>();
+    private ArrayList<Integer> zGasConc = new ArrayList<Integer>();
     private ArrayList<Date> accTime = new ArrayList<Date>();
 
     private BatteryData batteryData;
@@ -74,13 +68,10 @@ public class BluetoothLeService extends Service {
     public final static String ACTION_BATTERY_LEVEL = "ACTION_BATTERY_LEVEL";
     public final static String ACTION_DATA_AVAILABLE = "ACTION_DATA_AVAILABLE";
 
-    public final static UUID UUID_X_ACCELERATION = UUID.fromString(GattAttributes.X_ACCELERATION_MEASUREMENT);
-    public final static UUID UUID_Y_ACCELERATION = UUID.fromString(GattAttributes.BODY_SENSOR_LOCATION);
-    public final static UUID UUID_Z_ACCELERATION = UUID.fromString(GattAttributes.Z_ACCELERATION_MEASUREMENT);
-    public final static UUID UUID_X_GYROSCOPE = UUID.fromString(GattAttributes.X_GYROSCOPE_MEASUREMENT);
-    public final static UUID UUID_Y_GYROSCOPE = UUID.fromString(GattAttributes.Y_GYROSCOPE_MEASUREMENT);
-    public final static UUID UUID_Z_GYROSCOPE = UUID.fromString(GattAttributes.Z_GYROSCOPE_MEASUREMENT);
-    public final static UUID UUID_ACCELERATION_TIME = UUID.fromString(GattAttributes.ACCELEROMETER_TIME_MEASUREMENT);
+    public final static UUID UUID_xCurrent = UUID.fromString(GattAttributes.xCurrent_Measurement);
+    public final static UUID UUID_yTime = UUID.fromString(GattAttributes.yTimeMeasurement);
+    public final static UUID UUID_zGasConc = UUID.fromString(GattAttributes.zGasConc);
+    //public final static UUID UUID_ACCELERATION_TIME = UUID.fromString(GattAttributes.ACCELEROMETER_TIME_MEASUREMENT);
 
     public final static UUID UUID_BATTERY_LEVEL = UUID.fromString(GattAttributes.BATTERY_LEVEL); //wandle strings um in tatsächliche UUID
     public final static UUID UUID_BATTERY_STATUS = UUID.fromString(GattAttributes.BATTERY_STATUS);
@@ -134,7 +125,7 @@ public class BluetoothLeService extends Service {
                             //Log.d("atRead", "reading characteristic = " + a);
 
 
-                            if (isDataCharacteristic(gattCharacteristic)==X_ACCELERATION_READ) {
+                            if (isDataCharacteristic(gattCharacteristic)== xCurrent_Read) {
                                 setCharacteristicNotification(gattCharacteristic,true);
                                 //gatt.setCharacteristicNotification(gattCharacteristic, true);
 
@@ -179,20 +170,10 @@ public class BluetoothLeService extends Service {
                 //Log.d("Lucas", "Data Available " + characteristic.getUuid() + ", " + characteristic.getValue()); //zeige uns, dass wir angekommen sind, filtere mit Lucas
                 //commented this part on 18.04.2021, context: continuous data read
                 switch (isDataCharacteristic(characteristic)) { //we effectively say switch(1-9) depending of the characteristic we found
-                    case X_ACCELERATION_READ:
-                    case BODY_SENSOR_READ:
-                    case Z_ACCELERATION_READ:
-                    case X_GYROSCOPE_READ:
-                    case Y_GYROSCOPE_READ:
-                    case Z_GYROSCOPE_READ:
-                    case ACCELEROMETER_TIME_READ:
-                        if (sweepComplete) {
-                            chars.remove(chars.get(chars.size() - 1)); //removes last entry
-                            sweepComplete = false;
-                            Log.d("Lucas", "SweepCompleteTrue"); //zeige uns, dass wir angekommen sind, filtere mit Lucas
-                        }
-
-                        break;
+                    case xCurrent_Read:
+                    case yTime_Read:
+                    case zGasConc_Read:
+                    //case ACCELEROMETER_TIME_READ:
 
                     default:
                         chars.remove(chars.get(chars.size() - 1));
@@ -226,35 +207,24 @@ public class BluetoothLeService extends Service {
             Log.d("Battery", "BTTRY_READ"); //zeige uns, dass wir angekommen sind, filtere mit Lucas
             return BATTERY_LEVEL_READ; //These return a number between 1 and 9
 
-        } else if (UUID_X_ACCELERATION.equals(characteristic.getUuid())) {
+        } else if (UUID_xCurrent.equals(characteristic.getUuid())) {
             Log.d("Lucas", "X"); //zeige uns, dass wir angekommen sind, filtere mit Lucas//modifiziere
-            return X_ACCELERATION_READ;
+            return xCurrent_Read;
 
-        } else if (UUID_Y_ACCELERATION.equals(characteristic.getUuid())) {
+        } else if (UUID_yTime.equals(characteristic.getUuid())) {
             Log.d("Lucas", "Y"); //zeige uns, dass wir angekommen sind, filtere mit Lucas
-            return BODY_SENSOR_READ;
+            return yTime_Read;
 
-        } else if (UUID_Z_ACCELERATION.equals(characteristic.getUuid())) {
+        } else if (UUID_zGasConc.equals(characteristic.getUuid())) {
             Log.d("Lucas", "Z"); //zeige uns, dass wir angekommen sind, filtere mit Lucas
-            return Z_ACCELERATION_READ;
+            return zGasConc_Read;
 
-        } else if (UUID_X_GYROSCOPE.equals(characteristic.getUuid())) {
-            Log.d("Lucas", "XGyro"); //zeige uns, dass wir angekommen sind, filtere mit Lucas
-            return X_GYROSCOPE_READ;
 
-        } else if (UUID_Y_GYROSCOPE.equals(characteristic.getUuid())) {
-            Log.d("Lucas", "YGyro"); //zeige uns, dass wir angekommen sind, filtere mit Lucas
-            return Y_GYROSCOPE_READ;
+        } /**else if (UUID_ACCELERATION_TIME.equals(characteristic.getUuid())) {
+           // Log.d("Lucas", "Time"); //zeige uns, dass wir angekommen sind, filtere mit Lucas
+            //return ACCELEROMETER_TIME_READ;
 
-        } else if (UUID_Z_GYROSCOPE.equals(characteristic.getUuid())) {
-            Log.d("Lucas", "ZGyro"); //zeige uns, dass wir angekommen sind, filtere mit Lucas
-            return Z_GYROSCOPE_READ;
-
-        } else if (UUID_ACCELERATION_TIME.equals(characteristic.getUuid())) {
-            Log.d("Lucas", "Time"); //zeige uns, dass wir angekommen sind, filtere mit Lucas
-            return ACCELEROMETER_TIME_READ;
-
-        } else {
+        }*/ else {
             return 0;
         }
     }
@@ -269,7 +239,6 @@ public class BluetoothLeService extends Service {
         Log.d("Lucas", "broadcastUpdate2");
         final Intent intent = new Intent(action);
         int charWhat = isDataCharacteristic(characteristic);
-        int count;
 
         switch (charWhat) {
             case BATTERY_LEVEL_READ:
@@ -278,88 +247,38 @@ public class BluetoothLeService extends Service {
                 intent.putExtra(ACTION_BATTERY_LEVEL, String.valueOf(batteryLevel));
 
                 break;
-            case X_ACCELERATION_READ:
+            case xCurrent_Read:
                 //parseInt(string) returns an Int
                 //getStringValue(int offset) returns a char array, starting form an offset. This char array is the characteristic value of the string
-                //count = Integer.parseInt(characteristic.getStringValue(0).split(",")[1]); //count is some value defined in the Arduino code. Split [1] accesses the second element of some array
-                //xAcc.set(0,Integer.parseInt(characteristic.getStringValue(0).split(",")[0]));
-                xAcc.set(0,characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16,0));
-                //xAcc.set(0,1);
-                //xAcc.set(1,2);
+                xCurrent.set(0,characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16,0));
 
-                if (!xAcc.contains(0)) {
-                    sweepComplete = true;
-                }
-                Log.d(TAG, String.format("Received x acceleration level: %d", xAcc.get(0)));
+                Log.d(TAG, String.format("Received x acceleration level: %d", xCurrent.get(0)));
 
                 break;
-            case BODY_SENSOR_READ:
-                //count = Integer.parseInt(characteristic.getStringValue(0).split(",")[1]);
-                //yAcc.set(0,Integer.parseInt(characteristic.getStringValue(0).split(",")[0]));
-                yAcc.set(0,characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16,0));
-                //yAcc.set(0,1);
-                //yAcc.set(1,2);
+            case yTime_Read:
+                yTime.set(0,characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16,0));
 
-                if (!yAcc.contains(0)) {
-                    sweepComplete = true;
-                }
-
-                Log.d(TAG, String.format("Received Body Sensor Location: %d", yAcc.get(0)));
+                Log.d(TAG, String.format("Received Body Sensor Location: %d", yTime.get(0)));
 
                 break;
-            case Z_ACCELERATION_READ:
-                //count = Integer.parseInt(characteristic.getStringValue(0).split(",")[1]);
-                //zAcc.set(0,Integer.parseInt(characteristic.getStringValue(0).split(",")[0]));
-                zAcc.set(0,1);
-                zAcc.set(1,0);
-                if (!zAcc.contains(0)) {
-                    sweepComplete = true; //this is just a bool set to false by default
-                }
-                Log.d(TAG, String.format("Received z acceleration level: %d", zAcc.get(0)));
+            case zGasConc_Read:
+                zGasConc.set(0,1);
+                zGasConc.set(1,0);
+                Log.d(TAG, String.format("Received z acceleration level: %d", zGasConc.get(0)));
 
                 break;
-            case X_GYROSCOPE_READ:
-                //count = Integer.parseInt(characteristic.getStringValue(0).split(",")[1]);
-                xGyro.set(0,Integer.parseInt(characteristic.getStringValue(0).split(",")[0]));
 
-                if (!xGyro.contains(null)) {
-                    sweepComplete = true;
-                }
-                Log.d(TAG, String.format("Received x gyroscope level: %d", xGyro.get(0)));
-
-                break;
-            case Y_GYROSCOPE_READ:
-                //count = Integer.parseInt(characteristic.getStringValue(0).split(",")[1]);
-                yGyro.set(0,Integer.parseInt(characteristic.getStringValue(0).split(",")[0]));
-
-                if (!yGyro.contains(null)) {
-                    sweepComplete = true;
-                }
-                Log.d(TAG, String.format("Received y gyroscope level: %d", yGyro.get(0)));
-
-                break;
-            case Z_GYROSCOPE_READ:
-                //count = Integer.parseInt(characteristic.getStringValue(0).split(",")[1]);
-                zGyro.set(0,Integer.parseInt(characteristic.getStringValue(0).split(",")[0]));
-
-                if (!zGyro.contains(null)) {
-                    sweepComplete = true;
-                }
-                Log.d(TAG, String.format("Received z gyroscope level: %d", zGyro.get(0)));
-
-                break;
-            case ACCELEROMETER_TIME_READ:
-                /**count = Integer.parseInt(characteristic.getStringValue(0).split(",")[1]); */
-//                accTime.set(count,Integer.parseInt(characteristic.getStringValue(0).split(",")[0]));
+            /**case ACCELEROMETER_TIME_READ:
+                /**count = Integer.parseInt(characteristic.getStringValue(0).split(",")[1]);
+               accTime.set(count,Integer.parseInt(characteristic.getStringValue(0).split(",")[0]));
 
                 accTime.set(0,new Date());
 
                 if (!accTime.contains(null)) {
                     sweepComplete = true;
-                }
+                } */
 
-
-                break;
+                //break;
 
             default:
                 // For all other profiles, writes the data formatted in HEX.
@@ -383,7 +302,7 @@ public class BluetoothLeService extends Service {
     }
 
     private void saveAgmData() {
-        gasData = new GasData(xAcc, yAcc, zAcc, xGyro, yGyro, zGyro, accTime);
+        gasData = new GasData(xCurrent, yTime, zGasConc, accTime);
 
         SharedPreferences sharedPref = getSharedPreferences(getString(R.string.agm_key),Context.MODE_PRIVATE);
         SharedPreferences.Editor prefBleDeviceEditor = sharedPref.edit();
@@ -401,21 +320,15 @@ public class BluetoothLeService extends Service {
     }
 
     private void clearDataArrays() {
-        xAcc = new ArrayList<Integer>();
-        yAcc = new ArrayList<Integer>();
-        zAcc = new ArrayList<Integer>();
-        xGyro = new ArrayList<Integer>();
-        yGyro = new ArrayList<Integer>();
-        zGyro = new ArrayList<Integer>();
+        xCurrent = new ArrayList<Integer>();
+        yTime = new ArrayList<Integer>();
+        zGasConc = new ArrayList<Integer>();
         accTime = new ArrayList<Date>();
 
         for (int i=0; i < 5; i++) {
-            xAcc.add(i,null);
-            yAcc.add(i,null);
-            zAcc.add(i,null);
-            xGyro.add(i,null);
-            yGyro.add(i,null);
-            zGyro.add(i,null);
+            xCurrent.add(i,null);
+            yTime.add(i,null);
+            zGasConc.add(i,null);
             accTime.add(i,null);
         }
     }
