@@ -19,4 +19,6 @@
     <color name="colorWarn">#FF6F00</color>
     <color name="colorLightBackground">#373740</color>
     <color name="colorTransparent">#00000000</color>
+    <color name="colorBlueMedium">#0C70A1</color>
+    <color name="colorVeryLightGray">#e0e3e6</color>
 </resources>

@@ -20,10 +20,10 @@ public class GattAttributes {
     public static String BATTERY_LEVEL = "00002a19-0000-1000-8000-00805f9b34fb";
     public static String BATTERY_STATUS = "00002a1b-0000-1000-8000-00805f9b34fb";
 
-    public static String GAS_DATA_SERVICE = "0000180D-0000-1000-8000-00805F9B34FB";
-    public static String xCurrent_Measurement = "00002A37-0000-1000-8000-00805F9B34FB";
-    public static String yTimeMeasurement = "00002A38-0000-1000-8000-00805F9B34FB";
-    public static String zGasConc = "00000004-627e-47e5-a3fc-ddabd97aa966";
+    public static String GAS_DATA_SERVICE = "0000181A-0000-1000-8000-00805F9B34FB";
+    public static String xCurrent_Measurement = "00002AE0-0000-1000-8000-00805F9B34FB";
+    public static String yTimeMeasurement = "00002A59-0000-1000-8000-00805F9B34FB";
+    public static String zGasConc = "00002A58-0000-1000-8000-00805F9B34FB";
     public static String ACCELEROMETER_TIME_MEASUREMENT = "00000038-627e-47e5-a3fc-ddabd97aa966";
 
     public static String DEVICE_NAME = "00002a00-0000-1000-8000-00805f9b34fb";

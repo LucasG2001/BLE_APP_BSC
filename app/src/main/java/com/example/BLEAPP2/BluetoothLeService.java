@@ -174,7 +174,7 @@ public class BluetoothLeService extends Service {
                     case yTime_Read:
                     case zGasConc_Read:
                     //case ACCELEROMETER_TIME_READ:
-
+                       
                     default:
                         chars.remove(chars.get(chars.size() - 1));
                         Log.d("Lucas", "Default"); //zeige uns, dass wir angekommen sind, filtere mit Lucas
@@ -242,7 +242,7 @@ public class BluetoothLeService extends Service {
 
         switch (charWhat) {
             case BATTERY_LEVEL_READ:
-                batteryLevel = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8,0);
+                batteryLevel = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16,0);
                 Log.d(TAG, String.format("Received battery level: %d", batteryLevel));
                 intent.putExtra(ACTION_BATTERY_LEVEL, String.valueOf(batteryLevel));
 
@@ -252,18 +252,26 @@ public class BluetoothLeService extends Service {
                 //getStringValue(int offset) returns a char array, starting form an offset. This char array is the characteristic value of the string
                 xCurrent.set(0,characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16,0));
 
+                if (!xCurrent.contains(0)) {
+                    sweepComplete = true;
+                }
                 Log.d(TAG, String.format("Received x acceleration level: %d", xCurrent.get(0)));
 
                 break;
             case yTime_Read:
                 yTime.set(0,characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16,0));
+                if (!yTime.contains(0)) {
+                    sweepComplete = true;
+                }
 
                 Log.d(TAG, String.format("Received Body Sensor Location: %d", yTime.get(0)));
 
                 break;
             case zGasConc_Read:
-                zGasConc.set(0,1);
-                zGasConc.set(1,0);
+                zGasConc.set(0,characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16,0));
+                if (!zGasConc.contains(0)) {
+                    sweepComplete = true; //this is just a bool set to false by default
+                }
                 Log.d(TAG, String.format("Received z acceleration level: %d", zGasConc.get(0)));
 
                 break;
@@ -308,8 +316,8 @@ public class BluetoothLeService extends Service {
         SharedPreferences.Editor prefBleDeviceEditor = sharedPref.edit();
 
         prefBleDeviceEditor.putString("x_acc_avg", String.valueOf(gasData.getCurrentAvg()));
-        prefBleDeviceEditor.putString("y_acc_avg", String.valueOf(gasData.getYAccelerationAvg()));
-        //prefBleDeviceEditor.putString("z_acc_avg", String.valueOf(gasData.getLEDAvg()));
+        prefBleDeviceEditor.putString("y_acc_avg", String.valueOf(gasData.getTimeAvg()));
+        prefBleDeviceEditor.putString("z_acc_avg", String.valueOf(gasData.getGasConcentrationAvg()));
 
         /**prefBleDeviceEditor.putString("x_acc_avg", "1");
         prefBleDeviceEditor.putString("y_acc_avg", "2");

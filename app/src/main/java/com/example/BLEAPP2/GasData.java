@@ -26,21 +26,21 @@ public class GasData { // es existiert aber Android weiss noch nicht was es mach
         //formatReadTimes(times);
     }
 
-    public ArrayList<Integer> getXAcceleration() {
+    public ArrayList<Integer> getCurrent() {
         return this.current;
     } /** ab hier lässt uns das Programm Daten lesen und schreiben */
     public void setCurrent(ArrayList<Integer> xCurrent) {
         this.current = xCurrent;
     }
 
-    public ArrayList<Integer> getYAcceleration() {
+    public ArrayList<Integer> getTime() {
         return this.time;
     }
     public void setTime(ArrayList<Integer> yTime) {
         this.time = yTime;
     }
 
-    public ArrayList<Integer> getZAcceleration() {
+    public ArrayList<Integer> getGasConcentration() {
         return this.GasConcentration;
     }
     public void setGasConcentration(ArrayList<Integer> zGasConc) {
@@ -52,11 +52,11 @@ public class GasData { // es existiert aber Android weiss noch nicht was es mach
 
     }
 
-    public int getYAccelerationAvg() {
+    public int getTimeAvg() {
         return calculateAverage(this.time);
     }
 
-    public int getLEDAvg() {
+    public int getGasConcentrationAvg() {
         return calculateAverage(this.GasConcentration);
     }
 

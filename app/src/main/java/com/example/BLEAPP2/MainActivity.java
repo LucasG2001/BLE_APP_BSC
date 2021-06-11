@@ -66,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView xAccView;
     private TextView yAccView;
     private TextView warningtextview;
+    private TextView gasConcentrationView;
+    private TextView VarianceView;
     private TextView zAccView;
     private TextView activityView;
     //initialize graph Series
@@ -87,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         series.setThickness(8);
         //plots line graph
         GraphView graph = findViewById(R.id.graph);
-        graph.setTitle("No2 gas concentration");
+        graph.setTitle("Source-Drain current in mA vs time");
         graph.getViewport().setScalable(true); //enables scrolling
         graph.getViewport().setXAxisBoundsManual(true); //sets x axis boundaries
         graph.getViewport().setMinX(0);
@@ -96,7 +98,9 @@ public class MainActivity extends AppCompatActivity {
 
         graph.getGridLabelRenderer().setHorizontalAxisTitle("Time [s]");
         graph.getGridLabelRenderer().setHighlightZeroLines(true);
-        graph.getGridLabelRenderer().setVerticalAxisTitle("NO2 gas concentration [ppb]");
+        graph.getGridLabelRenderer().setVerticalAxisTitle("Source-Drain current in mA");
+        graph.getGridLabelRenderer().setLabelsSpace(0);
+        graph.getGridLabelRenderer().setPadding(100);
         // set graph such that only integer numbers are displayed
         NumberFormat nf = NumberFormat.getInstance();
         nf.setMaximumFractionDigits(0);
@@ -267,13 +271,18 @@ public class MainActivity extends AppCompatActivity {
         //yAccProgressView.setProgress(Integer.parseInt(yAccAvg));
         //zAccProgressView.setProgress(Integer.parseInt(zAccAvg));
 
-       if (Integer.parseInt(yAccAvg) < 50 || yAccAvg == null) {
+        gasConcentrationView.setText(zAccAvg);
+        warningtextview.setTextColor(getResources().getColorStateList(R.color.colorWhite));
+        VarianceView.setText("12");
+        warningtextview.setTextColor(getResources().getColorStateList(R.color.colorWhite));
+
+       if (Integer.parseInt(zAccAvg) < 50 || yAccAvg == null) {
             warningtextview.setText("Gas concentration low");
             warningtextview.setTextColor(getResources().getColorStateList(R.color.colorGreen));
-        } else if (Integer.parseInt(yAccAvg) > 50 && Integer.parseInt(yAccAvg) < 200) {
+        } else if (Integer.parseInt(zAccAvg) > 50 && Integer.parseInt(zAccAvg) < 200) {
            warningtextview.setText("Gas concentration medium");
            warningtextview.setTextColor(getResources().getColorStateList(R.color.colorYellow));
-        } else {
+        } else if (Integer.parseInt(zAccAvg)>200){
            warningtextview.setText("Gas concentration high!");
            warningtextview.setTextColor(getResources().getColorStateList(R.color.colorPrimaryRed));
            }
@@ -281,17 +290,12 @@ public class MainActivity extends AppCompatActivity {
 
         scanProgressBar.setVisibility(View.GONE);
         // append new value to graph
-        series.appendData(new DataPoint(Integer.parseInt(xAccAvg),Integer.parseInt(yAccAvg)), true, 100000);
+        series.appendData(new DataPoint(Integer.parseInt(yAccAvg),Integer.parseInt(xAccAvg)), true, 100000);
         Log.d("A","appended Data point");
         Log.d("A",""+Integer.parseInt(xAccAvg)+" "+Integer.parseInt(yAccAvg));
     }
 
-    public void openBleScanner() {
-        Intent i = new Intent(this, RecyclerBleDeviceActivity.class);
-        startActivity(i);
-    }
-
-    @SuppressLint("WrongConstant")
+     @SuppressLint("WrongConstant")
     public void initializeLayout() {
         this.getSupportActionBar().setDisplayOptions(DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
@@ -309,16 +313,9 @@ public class MainActivity extends AppCompatActivity {
         //zAccView = findViewById(R.id.z_acc);
 
         warningtextview = findViewById(R.id.warningText);
-        //zAccProgressView = findViewById(R.id.z_acc_progress);
+        gasConcentrationView = findViewById(R.id.gasConcentrationValue);
+        VarianceView = findViewById(R.id.VarianceValue);
 
-        //activityView = findViewById(R.id.activity_summary);
-
-        scanView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //openBleScanner();
-            }
-        });
 
         reconnectView.setOnClickListener(new View.OnClickListener() {
             @Override
