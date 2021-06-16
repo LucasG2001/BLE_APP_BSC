@@ -60,17 +60,10 @@ public class MainActivity extends AppCompatActivity {
     private TextView scanView;
     private SharedPreferences sharedPrefBLE;
 
-    private ProgressBar xAccProgressView;
-    private ProgressBar yAccProgressView;
-    private ProgressBar zAccProgressView;
-    private TextView xAccView;
-    private TextView yAccView;
     private TextView warningtextview;
     private TextView gasConcentrationView;
     private TextView VarianceView;
-    private TextView zAccView;
-    private TextView activityView;
-    //initialize graph Series
+       //initialize graph Series
     LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
             new DataPoint(0, 0),
     });
@@ -262,15 +255,6 @@ public class MainActivity extends AppCompatActivity {
         String yAccAvg = sharedPrefAgm.getString("y_acc_avg", null);   //original: null
         String zAccAvg = sharedPrefAgm.getString("z_acc_avg", null);   //original: null
 
-        //here the actual text shown on screen is actually set
-        //xAccView.setText(xAccAvg);
-        //AccView.setText(yAccAvg);
-        //zAccView.setText(zAccAvg);
-
-        //xAccProgressView.setProgress(Integer.parseInt(xAccAvg));
-        //yAccProgressView.setProgress(Integer.parseInt(yAccAvg));
-        //zAccProgressView.setProgress(Integer.parseInt(zAccAvg));
-
         gasConcentrationView.setText(zAccAvg);
         warningtextview.setTextColor(getResources().getColorStateList(R.color.colorWhite));
         VarianceView.setText("12");
@@ -295,6 +279,11 @@ public class MainActivity extends AppCompatActivity {
         Log.d("A",""+Integer.parseInt(xAccAvg)+" "+Integer.parseInt(yAccAvg));
     }
 
+    public void openBleScanner() {
+        Intent i = new Intent(this, RecyclerBleDeviceActivity.class);
+        startActivity(i);
+    }
+
      @SuppressLint("WrongConstant")
     public void initializeLayout() {
         this.getSupportActionBar().setDisplayOptions(DISPLAY_SHOW_CUSTOM);
@@ -308,14 +297,17 @@ public class MainActivity extends AppCompatActivity {
         scanProgressBar = actionView.findViewById(R.id.scanInProgress);
         reconnectView = actionView.findViewById(R.id.reconnect);
 
-        //xAccView = findViewById(R.id.x_acc);
-        //yAccView = findViewById(R.id.y_acc);
-        //zAccView = findViewById(R.id.z_acc);
 
         warningtextview = findViewById(R.id.warningText);
         gasConcentrationView = findViewById(R.id.gasConcentrationValue);
         VarianceView = findViewById(R.id.VarianceValue);
 
+         scanView.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 openBleScanner();
+             }
+         });
 
         reconnectView.setOnClickListener(new View.OnClickListener() {
             @Override

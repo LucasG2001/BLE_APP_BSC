@@ -169,17 +169,17 @@ public class BluetoothLeService extends Service {
                 //added 19.04.2021
                 //Log.d("Lucas", "Data Available " + characteristic.getUuid() + ", " + characteristic.getValue()); //zeige uns, dass wir angekommen sind, filtere mit Lucas
                 //commented this part on 18.04.2021, context: continuous data read
-                switch (isDataCharacteristic(characteristic)) { //we effectively say switch(1-9) depending of the characteristic we found
+                /*switch (isDataCharacteristic(characteristic)) { //we effectively say switch(1-9) depending of the characteristic we found
                     case xCurrent_Read:
                     case yTime_Read:
                     case zGasConc_Read:
                     //case ACCELEROMETER_TIME_READ:
-                       
-                    default:
-                        chars.remove(chars.get(chars.size() - 1));
-                        Log.d("Lucas", "Default"); //zeige uns, dass wir angekommen sind, filtere mit Lucas
-                        break;
-                }
+                }*/
+
+                chars.remove(chars.get(chars.size() - 1));
+                Log.d("Lucas", "Default"); //zeige uns, dass wir angekommen sind, filtere mit Lucas
+
+
 
                 if (chars.size() > 0) {
                     requestCharacteristics(gatt);
@@ -196,8 +196,7 @@ public class BluetoothLeService extends Service {
                     gatt.discoverServices();
                     //disconnect();
                 }
-                //saveAgmData();
-                }
+                                }
             }
     };
 

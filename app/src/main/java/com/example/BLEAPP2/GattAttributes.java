@@ -49,7 +49,7 @@ public class GattAttributes {
 
     static { /** static connstructor*/
         // Services
-        attributes.put(GAS_DATA_SERVICE, "Accelerometer Service");
+        attributes.put(GAS_DATA_SERVICE, "Accele1rometer Service");
         attributes.put(BATTERY_SERVICE, "Battery Service"); //Namenszuweisung
         attributes.put(GENERIC_ACCESS, "Generic Access");
         attributes.put(DEVICE_INFORMATION_SERVICE, "Device Information Service");
